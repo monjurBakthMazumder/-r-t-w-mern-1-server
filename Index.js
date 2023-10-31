@@ -26,19 +26,20 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    const serviceCollection = client.db("carCareBD").collection("services")
+    const servicesCollection = client.db("carCareBD").collection("services")
     const bookingsCollection = client.db("carCareBD").collection("bookings")
+    const employeesCollection = client.db("carCareBD").collection("employees")
 
     //service related api 
     app.get('/services', async(req, res) => {
-        const services = await serviceCollection.find().toArray()
+        const services = await servicesCollection.find().toArray()
         res.send(services)
     })
 
     app.get('/services/:id', async(req, res) => {
       const id = req.params.id
       const cursor = {_id: new ObjectId(id)}
-      const result = await serviceCollection.findOne(cursor)
+      const result = await servicesCollection.findOne(cursor)
       res.send(result)
     })
 
@@ -58,6 +59,19 @@ async function run() {
       res.send(result)
     })
 
+    app.delete('/bookings/:id', async(req, res) => {
+      const id = req.params
+      const cursor = {_id : new ObjectId(id)}
+      const result = await bookingsCollection.deleteOne(cursor)
+      res.send(result)
+    })
+
+    // employee related api
+    app.post('/employees', async(req, res) => {
+      const employee = req.body
+      const result = await employeesCollection.insertOne(employee)
+      res.send(result)
+    })
 
 
 
