@@ -26,7 +26,8 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
     // Send a ping to confirm a successful connection
-    const serviceCollection = client.db("Real1").collection("Service")
+    const serviceCollection = client.db("carCareBD").collection("services")
+    const checkoutCollection = client.db("carCareBD").collection("checkout")
 
     //service related api 
     app.get('/services', async(req, res) => {
@@ -41,6 +42,12 @@ async function run() {
       res.send(result)
     })
 
+    //check out related api 
+    app.post('/checkout', async(req, res) => {
+      const checkout = req.body
+      const result = await checkoutCollection.insertOne(checkout)
+      res.send(result)
+    })
 
 
 
