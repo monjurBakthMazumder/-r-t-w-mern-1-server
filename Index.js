@@ -27,7 +27,7 @@ async function run() {
     await client.connect();
     // Send a ping to confirm a successful connection
     const serviceCollection = client.db("carCareBD").collection("services")
-    const checkoutCollection = client.db("carCareBD").collection("checkout")
+    const bookingsCollection = client.db("carCareBD").collection("bookings")
 
     //service related api 
     app.get('/services', async(req, res) => {
@@ -43,7 +43,16 @@ async function run() {
     })
 
     //check out related api 
-    app.post('/checkout', async(req, res) => {
+    app.get('/bookings', async(req, res) => {
+      let query = []
+      if(req?.query?.email){
+        query = {email : req.query?.email}
+      }
+      const result = await bookingsCollection.find(query).toArray();
+      res.send(result)
+    })
+
+    app.post('/bookings', async(req, res) => {
       const checkout = req.body
       const result = await checkoutCollection.insertOne(checkout)
       res.send(result)
