@@ -42,6 +42,13 @@ async function run() {
       res.send(result);
     });
 
+    app.delete("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const cursor = { _id: new ObjectId(id)}
+      const result = await servicesCollection.deleteOne(cursor)
+      res.send(result);
+    })
+
     //check out related api
     app.get("/bookings", async (req, res) => {
       let query = [];
