@@ -85,6 +85,13 @@ async function run() {
       res.send(result)
     })
 
+    app.delete('/employees/:id', async(req, res) =>{
+      const id = req.params 
+      const cursor = {_id : new ObjectId(id)}
+      const result = await employeesCollection.deleteOne(cursor)
+      res.send(result)
+    })
+
 
 
 
