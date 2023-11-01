@@ -59,14 +59,14 @@ async function run() {
           img: services.img,
           price: services.price,
           description: services.description,
-          // 'facility[0].name': services.facility[0].name ,
-          // 'facility[0].details': services.facility[0].details ,
-          // 'facility[1].name': services.facility[1].name ,
-          // 'facility[1].details': services.facility[1].details ,
-          // 'facility[2].name': services.facility[2].name ,
-          // 'facility[2].details': services.facility[2].details ,
-          // 'facility[3].name': services.facility[3].name ,
-          // 'facility[3].details': services.facility[3].details ,
+          'facility[0].name': services.facility[0].name ,
+          'facility[0].details': services.facility[0].details ,
+          'facility[1].name': services.facility[1].name ,
+          'facility[1].details': services.facility[1].details ,
+          'facility[2].name': services.facility[2].name ,
+          'facility[2].details': services.facility[2].details ,
+          'facility[3].name': services.facility[3].name ,
+          'facility[3].details': services.facility[3].details ,
         },
       };
       const result = await servicesCollection.updateOne(
@@ -96,7 +96,7 @@ async function run() {
 
     app.post("/bookings", async (req, res) => {
       const checkout = req.body;
-      const result = await checkoutCollection.insertOne(checkout);
+      const result = await bookingsCollection.insertOne(checkout);
       res.send(result);
     });
 
