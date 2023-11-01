@@ -43,17 +43,46 @@ async function run() {
     });
 
     app.post("/services", async (req, res) => {
-      const services = req.body
-      const result = await servicesCollection.insertOne(services)
+      const services = req.body;
+      const result = await servicesCollection.insertOne(services);
       res.send(result);
-    })
+    });
+
+    app.put("/services/:id", async (req, res) => {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const services = req.body;
+      const updateServices = {
+        $set: {
+          title: services.title,
+          img: services.img,
+          price: services.price,
+          description: services.description,
+          // 'facility[0].name': services.facility[0].name ,
+          // 'facility[0].details': services.facility[0].details ,
+          // 'facility[1].name': services.facility[1].name ,
+          // 'facility[1].details': services.facility[1].details ,
+          // 'facility[2].name': services.facility[2].name ,
+          // 'facility[2].details': services.facility[2].details ,
+          // 'facility[3].name': services.facility[3].name ,
+          // 'facility[3].details': services.facility[3].details ,
+        },
+      };
+      const result = await servicesCollection.updateOne(
+        filter,
+        updateServices,
+        options
+      );
+      res.send(result);
+    });
 
     app.delete("/services/:id", async (req, res) => {
       const id = req.params.id;
-      const cursor = { _id: new ObjectId(id)}
-      const result = await servicesCollection.deleteOne(cursor)
+      const cursor = { _id: new ObjectId(id) };
+      const result = await servicesCollection.deleteOne(cursor);
       res.send(result);
-    })
+    });
 
     //check out related api
     app.get("/bookings", async (req, res) => {
@@ -104,19 +133,23 @@ async function run() {
       const employee = req.body;
       const updateDate = {
         $set: {
-          name : employee.name,
-          designation : employee.designation,
-          email : employee.email,
-          phone : employee.phone,
-          img : employee.img,
-          facebook : employee.facebook,
-          instagram : employee.instagram,
-          twitter : employee.twitter,
-          linkedIn : employee.linkedIn,
-          details : employee.details,
+          name: employee.name,
+          designation: employee.designation,
+          email: employee.email,
+          phone: employee.phone,
+          img: employee.img,
+          facebook: employee.facebook,
+          instagram: employee.instagram,
+          twitter: employee.twitter,
+          linkedIn: employee.linkedIn,
+          details: employee.details,
         },
       };
-      const result = await employeesCollection.updateOne(filter, updateDate, options);
+      const result = await employeesCollection.updateOne(
+        filter,
+        updateDate,
+        options
+      );
       res.send(result);
     });
 
