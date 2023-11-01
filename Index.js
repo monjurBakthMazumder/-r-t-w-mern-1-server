@@ -72,11 +72,19 @@ async function run() {
       res.send(result)
     })
 
+    app.get('/employees/:id', async(req, res) =>{
+      const id = req.params 
+      const cursor = {_id : new ObjectId(id)}
+      const result = await employeesCollection.findOne(cursor)
+      res.send(result)
+    })
+
     app.post('/employees', async(req, res) => {
       const employee = req.body
       const result = await employeesCollection.insertOne(employee)
       res.send(result)
     })
+
 
 
 
