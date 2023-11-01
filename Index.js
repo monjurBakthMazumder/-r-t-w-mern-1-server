@@ -67,6 +67,11 @@ async function run() {
     })
 
     // employee related api
+    app.get('/employees', async(req, res) => {
+      const result = await employeesCollection.find().toArray()
+      res.send(result)
+    })
+
     app.post('/employees', async(req, res) => {
       const employee = req.body
       const result = await employeesCollection.insertOne(employee)
