@@ -11,8 +11,8 @@ const port = process.env.PORT || 5000;
 app.use(
   cors({
     origin: [
-      'http://localhost:5173',
-      'http://localhost:5174',
+      "http://localhost:5173",
+      "http://localhost:5174",
       "https://car-care-a22f4.web.app",
       "https://car-care-a22f4.firebaseapp.com",
     ],
@@ -115,14 +115,14 @@ async function run() {
           img: services.img,
           price: services.price,
           description: services.description,
-          "facility[0].name": services.facility[0].name,
-          "facility[0].details": services.facility[0].details,
-          "facility[1].name": services.facility[1].name,
-          "facility[1].details": services.facility[1].details,
-          "facility[2].name": services.facility[2].name,
-          "facility[2].details": services.facility[2].details,
-          "facility[3].name": services.facility[3].name,
-          "facility[3].details": services.facility[3].details,
+          "facility.0.name": services.facility[0].name,
+          "facility.0.details": services.facility[0].details,
+          "facility.1.name": services.facility[1].name,
+          "facility.1.details": services.facility[1].details,
+          "facility.2.name": services.facility[2].name,
+          "facility.2.details": services.facility[2].details,
+          "facility.3.name": services.facility[3].name,
+          "facility.3.details": services.facility[3].details,
         },
       };
       const result = await servicesCollection.updateOne(
