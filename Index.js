@@ -153,7 +153,7 @@ async function run() {
     });
 
     //check out related api
-    app.get("/bookings-count", async (req, res) => {
+    app.get("/bookings-count",verifyToken, async (req, res) => {
       const count = await bookingsCollection.estimatedDocumentCount();
       res.send({ count });
     });
@@ -176,13 +176,13 @@ async function run() {
       res.send(result);
     });
 
-    app.post("/bookings", async (req, res) => {
+    app.post("/bookings",verifyToken, async (req, res) => {
       const checkout = req.body;
       const result = await bookingsCollection.insertOne(checkout);
       res.send(result);
     });
 
-    app.delete("/bookings/:id", async (req, res) => {
+    app.delete("/bookings/:id",verifyToken, async (req, res) => {
       const id = req.params;
       const cursor = { _id: new ObjectId(id) };
       const result = await bookingsCollection.deleteOne(cursor);
