@@ -178,8 +178,17 @@ async function run() {
     });
 
     // employee related api
+    app.get("/employees-count", async (req, res) => {
+      const count = await employeesCollection.estimatedDocumentCount();
+      res.send({count});
+    });
     app.get("/employees", async (req, res) => {
-      const result = await employeesCollection.find().toArray();
+      const page = Number(req.query.page)
+      const size = Number(req.query.size)
+      const result = await employeesCollection.find()
+      .skip(page * size)
+      .limit(size)
+      .toArray();
       res.send(result);
     });
 
