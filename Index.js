@@ -86,8 +86,18 @@ async function run() {
     });
 
     //service related api
+
+    app.get("/services-count", async (req, res) => {
+      const count = await servicesCollection.estimatedDocumentCount();
+      res.send({count});
+    });
     app.get("/services", async (req, res) => {
-      const services = await servicesCollection.find().toArray();
+      const page = Number(req.query.page)
+      const size = Number(req.query.size)
+      const services = await servicesCollection.find()
+      .skip(page * size)
+      .limit(size)
+      .toArray();
       res.send(services);
     });
 
