@@ -75,6 +75,7 @@ async function run() {
           httpOnly: true,
           secure: true,
           sameSite: "none",
+          maxAge: 60 * 60 * 1000,
         })
         .send({ success: true });
     });
@@ -89,15 +90,16 @@ async function run() {
 
     app.get("/services-count", async (req, res) => {
       const count = await servicesCollection.estimatedDocumentCount();
-      res.send({count});
+      res.send({ count });
     });
     app.get("/services", async (req, res) => {
-      const page = Number(req.query.page)
-      const size = Number(req.query.size)
-      const services = await servicesCollection.find()
-      .skip(page * size)
-      .limit(size)
-      .toArray();
+      const page = Number(req.query.page);
+      const size = Number(req.query.size);
+      const services = await servicesCollection
+        .find()
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(services);
     });
 
@@ -151,6 +153,10 @@ async function run() {
     });
 
     //check out related api
+    app.get("/bookings-count", async (req, res) => {
+      const count = await bookingsCollection.estimatedDocumentCount();
+      res.send({ count });
+    });
     app.get("/bookings", logger, verifyToken, async (req, res) => {
       console.log("user", req.user);
       if (req.user.email !== req.query.email) {
@@ -160,7 +166,13 @@ async function run() {
       if (req?.query?.email) {
         query = { email: req.query?.email };
       }
-      const result = await bookingsCollection.find(query).toArray();
+      const page = Number(req.query.page);
+      const size = Number(req.query.size);
+      const result = await bookingsCollection
+        .find(query)
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(result);
     });
 
@@ -180,15 +192,16 @@ async function run() {
     // employee related api
     app.get("/employees-count", async (req, res) => {
       const count = await employeesCollection.estimatedDocumentCount();
-      res.send({count});
+      res.send({ count });
     });
     app.get("/employees", async (req, res) => {
-      const page = Number(req.query.page)
-      const size = Number(req.query.size)
-      const result = await employeesCollection.find()
-      .skip(page * size)
-      .limit(size)
-      .toArray();
+      const page = Number(req.query.page);
+      const size = Number(req.query.size);
+      const result = await employeesCollection
+        .find()
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(result);
     });
 
